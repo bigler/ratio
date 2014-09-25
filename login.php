@@ -1,34 +1,53 @@
 <?php 
-@session_start(); 
+if (!defined('RATIO_1.0')) { header('Location:'.'is404.php');die(); }
+$display_hide='display-hide'; // class that hide alert div by default
+print_r($_SESSION);
+
 $ref=SITE_PATH;
+
+// Check if user already logged in. If TRUE - redirect this dumbass to previous page
 if(isset($_SERVER['HTTP_REFERER'])) $ref = $_SERVER['HTTP_REFERER'];
-if(isset($_SESSION['username'])) {
-     header("Location: ".$ref); die();
-}
+if(isset($_SESSION['username'])) {  header("Location: ".$ref); die(); }
 
 // Only process if the login form has been submitted.
 if(isset($_POST['login'])) {
 
 	$username = $_POST['username'];
 	$password = $_POST['password'];
-
+        
 	if (!isset($username) || !isset($password)) {
 		header( "Location: index.php" ); exit();
 	} elseif (empty($username) || empty($password)) {
-		$error = '<div class="alert-message error">'._('Введите имя пользователя и пароль.').'</div>';
+		  $display_hide='';
 	} else {
 
 		// Add slashes to the username and md5() the password
-		$user = mysql_real_escape_string(trim($_POST['username']));
-		$pass = mysql_real_escape_string(md5($_POST['password']));
-
-		$sql = "SELECT * FROM login_users WHERE username='$user' AND password='$pass'";
-		$result = mysql_query($sql);
-
-		// Check that at least one row was returned
-		$rowCheck = mysql_num_rows($result);
-
-		if($rowCheck > 0) {
+		$user = trim($_POST['username']);
+		$pass = md5($_POST['password']);
+                
+                $login=ORM::for_table('login_users')
+                        ->where(array(
+                                'username'=>$user,
+                                'password'=>$pass))
+                        ->find_one();
+                if ($login) {
+                    if (RATIO_LOGGED_MINUTES==0) {
+                        // no limit logged time
+                        ini_set('session.cookie_lifetime', 0);
+                    } else {
+                        ini_set('session.cookie_lifetime', 60 * RATIO_LOGGED_MINUTES);
+                    }
+                    session_regenerate_id();    
+                    
+                    // Save if user restricted
+                    $_SESSION['restricted'] = $login->restricted;
+                    
+                    // Save user's current level
+                    $user_level=unserialize($login->user_level);
+                    
+                   echo $user_level;
+                }
+/*		if($rowCheck > 0) {
 			while($row = mysql_fetch_array($result)) {
 
 				// Expiration per config.php
@@ -80,62 +99,97 @@ if(isset($_POST['login'])) {
       //echo $logtext;  print_r($_SERVER);
       do_log('attack',$logtext);
 			}
+                    */
 	}
 }
 
-
+echo $display_hide;
 //@include('functions/mk3_functions.php');
 //print_r($_SESSION);
-if(isset($error)) echo $error; ?>
+$css=array();
+$css[]="vendors/select2/select2.css";
+$css[]="themes/".THEME."/pages/css/login-soft.css";
+get_header($css);
+?>
 
-
-<div class="login-box">
-<div style="width: 220px; margin:0px 0px 0px 200px; padding-top: 50px;position: relative;">
-
-	<div class="main login2">
-		<form method="post" class="form" >
-        <div class="lng_select">
-            <a href="?mk3_lng=fr" class="fr24 mk3_lng" title="français" rel="fr">
-                <div class="paris mimi"></div>
-            </a>
-            <a href="?mk3_lng=ru" class="ru24 mk3_lng" title="русский" rel="ru">
-                 <div class="moscow mimi"></div>
-            </a>
-        </div>    
-		<h6><?php __('Необходима авторизация'); ?></h6>
-    <div class="dt"></div>   
-		<fieldset>
-			<div class="clearfix">
-		 	<div class="input-prepend">
-        <span class="add-on" style="width:50px;"><?php __('Логин'); ?></span><input  id="username" name="username" size="30" type="text" class="span2" style="width:149px;"/>
-        </div>
-				
-			</div><!-- /clearfix -->
-
-			<div class="clearfix">
-	   
-			<div class="input-prepend">
-        <span class="add-on"  style="width:50px;"><?php __('Пароль'); ?></span><input id="password" name="password" size="30" type="password" class="span2" style="width:149px;"/>
-        </div>
-
-			</div><!-- /clearfix -->
-
-		</fieldset>
-
-
-
-
-
-
-		<label class="checkbox inline" for="remember">
-			<input type="checkbox" id="remember" name="remember"/><span style="color:#fff;"><?php __('Запомнить'); ?></span>
-		</label>
-	  <div style="text-align: right; padding-top: 7px;">
-		<input type="submit" value="<?php __('Вход'); ?>" class="btn btn-primary" name="login" style="width: 82px; color: #fff; "/>
-	  </div>
-		
-		</form>
-	</div>
-
+<body class="login">
+<!-- BEGIN LOGO -->
+<div class="logo">
+	<a href="index.php">
+	<img src="<?php echo THEMEHOME; ?>/img/logo-big.png" alt=""/>
+	</a>
 </div>
- </div>
+<!-- END LOGO -->
+<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+<div class="menu-toggler sidebar-toggler">
+</div>
+<!-- END SIDEBAR TOGGLER BUTTON -->
+<!-- BEGIN LOGIN -->
+<div class="content">
+	<!-- BEGIN LOGIN FORM -->
+	<form class="login-form" action="index.php" method="post">
+		<h3 class="form-title"><?php __('Login to your account');?></h3>
+		<div class="alert alert-danger <?php echo $display_hide;?>">
+			<button class="close" data-close="alert"></button>
+			<span>
+			<?php __('Enter any username and password.');?> 
+                        </span>
+		</div>
+		<div class="form-group">
+			<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+			<label class="control-label visible-ie8 visible-ie9"><?php __('Username');?></label>
+			<div class="input-icon">
+				<i class="fa fa-user"></i>
+				<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="<?php __('Username');?>" name="username"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label visible-ie8 visible-ie9"><?php __('Password');?></label>
+			<div class="input-icon">
+				<i class="fa fa-lock"></i>
+				<input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="<?php __('Password');?>" name="password"/>
+			</div>
+		</div>
+		<div class="form-actions">
+			<label class="checkbox">
+			<input type="checkbox" name="remember" value="1"/> <?php __('Remember me');?> </label>
+			<button type="submit" class="btn blue pull-right" name="login">
+			<?php __('Login');?> <i class="m-icon-swapright m-icon-white"></i>
+			</button>
+		</div>
+		<div class="login-options">
+			<h4><?php __('Choose your language');?> : <span class="lng_title"></span></h4>
+                        <div id="lng_switch">
+                            <a class="rama"></a>
+                            <a class="ln" href="?_lng=ru" title="русский"><img src="<?php echo THEMEHOME;?>/img/flags32/ru.png" title="русский"></a>
+                            <a class="ln" href="?_lng=fr" title="français"><img src="<?php echo THEMEHOME;?>/img/flags32/fr.png" title="français"></a>
+                            <a class="ln" href="?_lng=en" title="english"><img src="<?php echo THEMEHOME;?>/img/flags32/en.png" title="english"></a>
+                        </div>
+		</div>
+		
+		
+	</form>
+	<!-- END LOGIN FORM -->
+</div>
+<!-- END LOGIN -->
+<!-- BEGIN COPYRIGHT -->
+<div class="copyright">
+	 2014 &copy; Ratio System
+</div>
+
+<?php
+
+get_current_page_script('login-soft');
+$scripts=array();
+$scripts[]="vendors/jquery-validation/js/jquery.validate.min.js";
+$scripts[]="vendors/backstretch/jquery.backstretch.min.js";
+$scripts[]="vendors/select2/select2.min.js";
+$scripts[]="themes/".THEME."/scripts/metronic.js";
+$scripts[]="themes/".THEME."/scripts/layout.js";
+get_footer($scripts); 
+?>
+
+
+
+
+

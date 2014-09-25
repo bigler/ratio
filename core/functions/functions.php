@@ -22,7 +22,8 @@ if (!isset($_SESSION['user_level']))  {
     }
     return (int)$def_level;
   
-}    
+} 
+
 function __($txt) {
     echo _($txt);
 }  
@@ -409,4 +410,8 @@ function get_contract_budget($id){
     return $ret;
     
 }
+
+
+
+
 ?>

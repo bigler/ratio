@@ -25,6 +25,14 @@
 	// How long would you like users to remain logged in?
 	// 0 means logout on browser close
 
-	$minutes = 1;
+	define("RATIO_LOGGED_MINUTES",0);
 
+        ////////////////////
+        //  Default theme
+        
+        define("THEME",'metronic');
+        
+        define("RATIO_TITLE",'RATIO SYSTEM');
+        
+        define("IS_MULTILANGUAGE",true);
 	?>

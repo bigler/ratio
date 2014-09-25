@@ -1,22 +1,23 @@
-<!-- Footer
-================================================== -->
-
-      <footer>
-        <p><a href="http://mk3.ru" target="_TOP"><?php __('Инжиниринговая компания MK3');?> 2012-2014</a></p>
-      </footer>
-
-    </div> <!-- /content -->
-</div> <!-- /container-fluid -->
-	<?php if(stristr($_SERVER['PHP_SELF'], 'admin') or stristr($_SERVER['PHP_SELF'], 'install.php')) $loc = '../'; else $loc = ''; ?>
-
-	<!-- Le javascript -->
-  <!--	<script src="<?php echo $loc; ?>assets/js/bootstrap.min.new.js"></script>     -->
-		<script src="<?php echo $loc; ?>assets/js/bootstrap-dropdown.js"></script>  
-	
-     
-
-	<script src="<?php echo $loc; ?>assets/js/jquery.jigowatt.js"></script> 
-	<?php if ($loc != '') { ?><script src="assets/js/ajax_search.js"></script><?php } ?>  
-
-  </body>
+<?php  if (!defined('RATIO_1.0')) { header('Location:'.'is404.php');die(); }        ?>
+<!-- END COPYRIGHT -->
+<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+<!-- BEGIN CORE PLUGINS -->
+<!--[if lt IE 9]>
+<script src="vendors/respond.min.js"></script>
+<script src="vendors/excanvas.min.js"></script> 
+<![endif]-->
+<!-- IMPORTANT! Load jquery-ui-1.10.3.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
+<script src="vendors/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+<script src="vendors/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="vendors/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+<script src="vendors/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+<script src="vendors/jquery.blockui.min.js" type="text/javascript"></script>
+<script src="vendors/jquery.cokie.min.js" type="text/javascript"></script>
+<script src="vendors/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+<script src="vendors/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+<!-- END CORE PLUGINS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<?php  get_page_scripts($scripts); ?>
+<!-- END PAGE LEVEL SCRIPTS -->
+</body>
 </html>

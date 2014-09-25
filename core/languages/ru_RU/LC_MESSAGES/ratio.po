@@ -1,0 +1,98 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: RATIO 1.0\n"
+"POT-Creation-Date: 2014-08-25 21:03+0400\n"
+"PO-Revision-Date: 2014-08-25 21:23+0400\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.8\n"
+"X-Poedit-Basepath: g:\\xampp2\\htdocs\\ratio\\\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: _;__\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: core/functions/functions.php:128
+msgid "закрыт"
+msgstr ""
+
+#: core/functions/functions.php:129
+msgid "открыт"
+msgstr ""
+
+#: core/functions/functions.php:130
+msgid "предварительный"
+msgstr ""
+
+#: core/functions/functions.php:131
+msgid "административный"
+msgstr ""
+
+#: core/functions/functions.php:309
+msgid "Ошибка!"
+msgstr ""
+
+#: core/functions/functions.php:309
+msgid "Превышен планируемый бюджет! Платеж не записан! "
+msgstr ""
+
+#: is404.php:30
+msgid "Houston, we have a problem."
+msgstr "Хьюстон, у нас проблема."
+
+#: is404.php:32
+msgid "Actually, the page you are looking for does not exist."
+msgstr "Упс, запрашиваемая страница не найдена."
+
+#: is404.php:36
+msgid "Return home"
+msgstr "На Главную"
+
+#: login.php:19
+msgid "Введите имя пользователя и пароль."
+msgstr ""
+
+#: login.php:79
+msgid "Некорректное имя пользователя или пароль."
+msgstr ""
+
+#: login.php:112
+msgid "Login to your account"
+msgstr "Введите учетные данные"
+
+#: login.php:116
+msgid "Enter any username and password."
+msgstr "Введите имя пользователя и пароль."
+
+#: login.php:120 login.php:123
+msgid "Username"
+msgstr "Имя пользователя"
+
+#: login.php:127 login.php:130
+msgid "Password"
+msgstr "Пароль"
+
+#: login.php:135
+msgid "Remember me"
+msgstr "Запомнить меня"
+
+#: login.php:137
+msgid "Login"
+msgstr "Имя пользователя"
+
+#: login.php:141
+msgid "Choose your language"
+msgstr "Выберите язык интерфейса"
+
+#: themes/metronic/pages/scripts/login-soft.js.php:15
+msgid "Username is required."
+msgstr "Необходимо ввести имя пользователя."
+
+#: themes/metronic/pages/scripts/login-soft.js.php:16
+msgid "Password is required."
+msgstr "Необходимо ввести пароль."
